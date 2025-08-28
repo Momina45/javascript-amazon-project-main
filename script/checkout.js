@@ -88,6 +88,15 @@ cartSummary +=`<div class="cart-item-container
           </div>`;
 });
 document.querySelector('.js-order-summary').innerHTML = cartSummary;
+updateCart(`${products.id}`);
+function updateCart(productId){
+    let quantity = 0;
+    cart.forEach((item)=>{
+        quantity += item.quantity;
+    })
+
+document.querySelector('.js-items-count').innerHTML = `${quantity}items`;
+}
 
 document.querySelectorAll('.js-delete-link')
     .forEach((link)=>{
