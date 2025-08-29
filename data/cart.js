@@ -13,6 +13,15 @@ export let cart = JSON.parse(localStorage.getItem('cart'));
     function saveToStorage(){
         localStorage.setItem('cart',JSON.stringify(cart));
     }
+    export function calculateQuantity(){
+    let quantity = 0;
+    
+            cart.forEach((item) => {
+                quantity += item.quantity;
+            });
+    
+              return quantity;
+        }
 export function addToCart(productId){
         let selecterQuantity = document.querySelector(`.js-quantity-${productId}`)|| 1;
         let quantity = Number(selecterQuantity.value) || 1;

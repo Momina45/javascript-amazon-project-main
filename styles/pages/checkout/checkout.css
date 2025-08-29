@@ -209,3 +209,15 @@
   margin-top: 11px;
   margin-bottom: 15px;
 }
+.quantity-input{
+  width: 30px;
+}
+.link-invisible{
+  display: none;
+}
+.is-editting-quantity .link-invisible{
+  display: initial;
+}
+.is-editting-quantity .update-save-link{
+  display: none;
+}

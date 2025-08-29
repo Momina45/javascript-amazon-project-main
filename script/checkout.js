@@ -1,4 +1,4 @@
-import {cart, RemovefromCart} from '../data/cart.js';
+import {calculateQuantity, cart, RemovefromCart} from '../data/cart.js';
 import {products} from '../data/products.js';
 import {formatCurrency} from './utilis/money.js';
 let cartSummary ='';
@@ -29,11 +29,13 @@ cartSummary +=`<div class="cart-item-container
                 </div>
                 <div class="product-quantity">
                   <span>
-                    Quantity: <span class="quantity-label">${cartItem.quantity}</span>
+                    Quantity: <span class="quantity-label update-save-link">${cartItem.quantity}</span>
                   </span>
-                  <span class="update-quantity-link link-primary">
+                  <input class="quantity-input link-invisible">
+                  <span class="update-quantity-link link-primary js-update-quantity-link update-save-link" data-product-id = "${matchingProduct.id}">
                     Update
                   </span>
+                  <span class = "save-quantity-link link-primary link-invisible"> Save </span>
                   <span class="delete-quantity-link link-primary js-delete-link" data-product-id = "${matchingProduct.id}">
                     Delete
                   </span>
@@ -87,23 +89,38 @@ cartSummary +=`<div class="cart-item-container
             </div>
           </div>`;
 });
-document.querySelector('.js-order-summary').innerHTML = cartSummary;
-updateCart(`${products.id}`);
-function updateCart(productId){
-    let quantity = 0;
-    cart.forEach((item)=>{
-        quantity += item.quantity;
-    })
+    document.querySelector('.js-order-summary').innerHTML = cartSummary;
+    let cartQuantity = calculateQuantity(); 
+    document.querySelector('.js-items-count').innerHTML = `${cartQuantity}items`;
 
-document.querySelector('.js-items-count').innerHTML = `${quantity}items`;
-}
-
-document.querySelectorAll('.js-delete-link')
-    .forEach((link)=>{
-        link.addEventListener('click',()=>{
-       const productId = link.dataset.productId;
-       RemovefromCart(productId);
-       const container = document.querySelector(`.js-cart-item-${productId}`);
-        container.remove();
+    document.querySelectorAll('.js-delete-link')
+        .forEach((link)=>{
+            link.addEventListener('click',()=>{
+          const productId = link.dataset.productId;
+          RemovefromCart(productId);
+          const container = document.querySelector(`.js-cart-item-${productId}`);
+            container.remove();
+            });
         });
-    })
+
+        let update = document.querySelectorAll('.js-update-quantity-link');
+          update.forEach((link)=>{
+            link.addEventListener('click',()=>{
+              const productId = link.dataset.productId;
+              console.log(productId);
+              let cartItem = document.querySelector(`.js-cart-item-${productId}`);
+              console.log(cartItem);
+              cartItem.classList.add("is-editting-quantity");
+              document.querySelector('.quantity-label').classList.add("is-editting-quantity");
+              document.querySelector('.update-quantity-link').classList.add("is-editting-quantity");
+
+              let saveBtn = document.querySelector('.save-quantity-link');
+              saveBtn.addEventListener('click',()=>{
+                let input = document.querySelector('.quantity-input');
+                let quantityValue = input.value;
+                document.querySelector('.quantity-label').innerHTML = quantityValue;
+                cartItem.classList.remove("is-editting-quantity");
+              })
+
+            })
+          })
