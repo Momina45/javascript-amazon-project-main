@@ -10,9 +10,19 @@ export let cart = JSON.parse(localStorage.getItem('cart'));
     quantity:1
 }];
     }
+    export function updateQuantity(productId,newQuantity){
+        cart.forEach((item)=>{
+            if(item.productId === productId){
+                item.quantity = newQuantity;
+                saveToStorage();
+            }
+        })
+    }
+
     function saveToStorage(){
         localStorage.setItem('cart',JSON.stringify(cart));
     }
+
     export function calculateQuantity(){
     let quantity = 0;
     
