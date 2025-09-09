@@ -16,6 +16,16 @@ function saveToStorage() {
   localStorage.setItem('cart', JSON.stringify(cart));
 }
 
+export function updateQuantity(productId, newQuantity) {
+  // Find the cart item and update its quantity
+  const matchingItem = cart.find((item) => item.productId === productId);
+
+  if (matchingItem) {
+    matchingItem.quantity = newQuantity;
+  }
+
+  saveToStorage();
+}
 export function addToCart(productId) {
   let matchingItem;
 
